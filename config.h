@@ -7,31 +7,43 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "monospace:size=10" };
 static const char dmenufont[]       = "monospace:size=10";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
-static const char col1[]            = "#ffffff";
-static const char col2[]            = "#ffffff";
-static const char col3[]            = "#ffffff";
-static const char col4[]            = "#ffffff";
-static const char col5[]            = "#ffffff";
-static const char col6[]            = "#ffffff";
+/* Default colors */
+static const char def_gray1[]       = "#222222";
+static const char def_gray2[]       = "#444444";
+static const char def_gray3[]       = "#bbbbbb";
+static const char def_gray4[]       = "#eeeeee";
+static const char def_cyan[]        = "#005577";
+static const char def1[]            = "#ffffff";
+static const char def2[]            = "#ffffff";
+static const char def3[]            = "#ffffff";
+static const char def4[]            = "#ffffff";
+static const char def5[]            = "#ffffff";
+static const char def6[]            = "#ffffff";
+/* Selenized black colors */
+static const char sel_bg1[]         = "#252525";
+static const char sel_dim0[]        = "#777777";
+static const char sel_dim1[]        = "#a0a0a0";
+static const char sel_fg0[]         = "#b9b9b9";
+static const char sel_fg1[]         = "#dedede";
+/* Catppuccin mocha colors */
+static const char sel_cyan[]        = "#3fc5b7";
+static const char cat_base[]        = "#1e1e2e";
+static const char cat_text[]        = "#cdd6f4";
+static const char cat_teal[]        = "#94e2d5";
 
 enum { SchemeNorm, SchemeCol1, SchemeCol2, SchemeCol3, SchemeCol4,
        SchemeCol5, SchemeCol6, SchemeSel }; /* color schemes */
 
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm]  = { col_gray3, col_gray1, col_gray2 },
-	[SchemeCol1]  = { col1,      col_gray1, col_gray2 },
-	[SchemeCol2]  = { col2,      col_gray1, col_gray2 },
-	[SchemeCol3]  = { col3,      col_gray1, col_gray2 },
-	[SchemeCol4]  = { col4,      col_gray1, col_gray2 },
-	[SchemeCol5]  = { col5,      col_gray1, col_gray2 },
-	[SchemeCol6]  = { col6,      col_gray1, col_gray2 },
-	[SchemeSel]   = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeNorm]  = { sel_fg0,  sel_bg1,    sel_bg1  },
+	[SchemeCol1]  = { def1,     def_gray1,  def_gray2 },
+	[SchemeCol2]  = { def2,     def_gray1,  def_gray2 },
+	[SchemeCol3]  = { def3,     def_gray1,  def_gray2 },
+	[SchemeCol4]  = { def4,     def_gray1,  def_gray2 },
+	[SchemeCol5]  = { def5,     def_gray1,  def_gray2 },
+	[SchemeCol6]  = { def6,     def_gray1,  def_gray2 },
+	[SchemeSel]   = { sel_cyan, sel_bg1,    sel_cyan  },
 };
 
 /* tagging */
@@ -42,9 +54,9 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	/* class	instance	title	tags	mask	isfloating	monitor */
+	{ "Gimp",	NULL,		NULL,	0,	1,	-1 },
+	{ "Firefox",	NULL,		NULL,	1 << 8,	0,	-1 },
 };
 
 /* layout(s) */
@@ -63,64 +75,122 @@ static const Layout layouts[] = {
 /* key definitions */
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
-	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+	{ MODKEY,			KEY,	view,		{.ui = 1 << TAG} }, \
+	{ MODKEY|ControlMask,		KEY,	toggleview,	{.ui = 1 << TAG} }, \
+	{ MODKEY|ShiftMask,		KEY,	tag,		{.ui = 1 << TAG} }, \
+	{ MODKEY|ControlMask|ShiftMask,	KEY,	toggletag,	{.ui = 1 << TAG} },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", def_gray1, "-nf", def_gray3, "-sb", def_cyan, "-sf", def_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
 
 #include <X11/XF86keysym.h>
 
+/* In keyboard order */
+
 static const Key keys[] = {
-	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
-	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_Return, zoom,           {0} },
-	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY,                       XK_q,      killclient,     {0} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	{ MODKEY,                       XK_n,       spawn,          {.v = (const char*[]){"bookmarks", NULL} } },
-	{ MODKEY,                       XK_w,       spawn,          {.v = (const char*[]){"mullvad", NULL} } },
-	TAGKEYS(                        XK_1,                      0)
-	TAGKEYS(                        XK_2,                      1)
-	TAGKEYS(                        XK_3,                      2)
-	TAGKEYS(                        XK_4,                      3)
-	TAGKEYS(                        XK_5,                      4)
-	TAGKEYS(                        XK_6,                      5)
-	TAGKEYS(                        XK_7,                      6)
-	TAGKEYS(                        XK_8,                      7)
-	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_e,      quit,           {0} },
-	{ 0,    XF86XK_MonBrightnessUp,     spawn,      {.v = (const char*[]){"light", "-A", "5", NULL} } },
-	{ 0,    XF86XK_MonBrightnessDown,   spawn,      {.v = (const char*[]){"light", "-U", "5", NULL} } },
-	{ 0,    XF86XK_AudioMicMute,        spawn,      {.v = (const char*[]){"wpctl", "set-mute", "@DEFAULT_AUDIO_SOURCE@", "toggle", NULL} } },
-	{ 0,    XF86XK_AudioMute,           spawn,      {.v = (const char*[]){"wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle", NULL} } },
-	{ 0,    XF86XK_AudioRaiseVolume,    spawn,      {.v = (const char*[]){"wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", "4%+", NULL} } },
-	{ 0,    XF86XK_AudioLowerVolume,    spawn,      {.v = (const char*[]){"wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", "4%-", NULL} } },
+	/* modifier			key		function	argument */
+	/* { MODKEY|ShiftMask,		XK_Escape,	spawn,		SHCMD("") }, */
+	/* { MODKEY,			XK_grave,	spawn,		{.v = (const char*[]){ "dmenuunicode", NULL } } }, */
+	/* { MODKEY|ShiftMask,		XK_grave,	togglescratch,	SHCMD("") }, */
+	TAGKEYS(			XK_1,		0)
+	TAGKEYS(			XK_2,		1)
+	TAGKEYS(			XK_3,		2)
+	TAGKEYS(			XK_4,		3)
+	TAGKEYS(			XK_5,		4)
+	TAGKEYS(			XK_6,		5)
+	TAGKEYS(			XK_7,		6)
+	TAGKEYS(			XK_8,		7)
+	TAGKEYS(			XK_9,		8)
+	{ MODKEY,			XK_0,		view,		{.ui = ~0 } },
+	{ MODKEY|ShiftMask,		XK_0,		tag,		{.ui = ~0 } },
+	/* { MODKEY,			XK_minus,	spawn,		SHCMD("") },*/
+	/* { MODKEY|ShiftMask,		XK_minus,	spawn,		SHCMD("") },*/
+	/* { MODKEY,			XK_equal,	spawn,		SHCMD("") },*/
+	/* { MODKEY|ShiftMask,		XK_equal,	spawn,		SHCMD("") },*/
+	/* { MODKEY,			XK_BackSpace,	spawn,		{.v = (const char*[]){ "sysact", NULL } } },*/
+	/* { MODKEY|ShiftMask,		XK_BackSpace,	spawn,		{.v = (const char*[]){ "sysact", NULL } } },*/
+
+	{ MODKEY,			XK_Tab,		view,		{0} },
+	/* { MODKEY|ShiftMask,		XK_Tab,		view,		{0} }, */
+	{ MODKEY,			XK_q,		killclient,	{0} },
+	{ MODKEY,			XK_w,		spawn,		{.v = (const char*[]){"mullvad", NULL} } },
+	/* { MODKEY|ShiftMask,		XK_w,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	/* { MODKEY,			XK_e,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	{ MODKEY|ShiftMask,		XK_e,		quit,		{0} },
+	/* { MODKEY,			XK_r,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	/* { MODKEY|ShiftMask,		XK_r,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	{ MODKEY,			XK_t,		setlayout,	{.v = &layouts[0]} },
+	/* { MODKEY|ShiftMask,		XK_t,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	/* { MODKEY,			XK_y,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	/* { MODKEY|ShiftMask,		XK_y,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	{ MODKEY,			XK_u,		spawn,		{.v = (const char*[]){"gousermenu", NULL} } },
+	/* { MODKEY|ShiftMask,		XK_u,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	{ MODKEY,			XK_o,		incnmaster,	{.i = +1 } },
+	{ MODKEY|ShiftMask,		XK_o,		incnmaster,	{.i = -1 } },
+	{ MODKEY,			XK_p,		spawn,		{.v = (const char*[]){"gopassmenu", NULL} } },
+	/* { MODKEY|ShiftMask,		XK_p,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	{ MODKEY,     		        XK_bracketleft,		spawn,		{.v = (const char*[]){ "mpc", "prev", NULL } } },
+	{ MODKEY|ShiftMask,		XK_bracketleft,        	spawn,		{.v = (const char*[]){ "mpc", "seek", "0%", NULL } } },
+	{ MODKEY,			XK_bracketright,	spawn,		{.v = (const char*[]){ "mpc", "next", NULL } } },
+	{ MODKEY|ShiftMask,		XK_bracketright,	spawn,		{.v = (const char*[]){ "mpc", "repeat", NULL } } },
+	/* { MODKEY,			XK_backslash,		view,		{0} }, */
+	/* { MODKEY|ShiftMask,		XK_backslash,		spawn,		SHCMD("") }, */
+
+	/* { MODKEY,			XK_a,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	/* { MODKEY|ShiftMask,		XK_a,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	/* { MODKEY,			XK_s,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	/* { MODKEY|ShiftMask,		XK_s,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	/* { MODKEY,			XK_d,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	/* { MODKEY|ShiftMask,		XK_d,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	{ MODKEY,			XK_f,		setlayout,	{.v = &layouts[1]} },
+	/* { MODKEY|ShiftMask,		XK_f,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	/* { MODKEY,			XK_g,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	/* { MODKEY|ShiftMask,		XK_g,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	{ MODKEY,			XK_h,		setmfact,	{.f=-0.05}},
+	{ MODKEY,			XK_j,		focusstack,	{.i=+1}},
+	{ MODKEY,			XK_k,		focusstack,	{.i = -1 } },
+	{ MODKEY,			XK_l,		setmfact,	{.f=+0.05}},
+	/* { MODKEY,			XK_semicolon	spawn,		{.v = (const char*[]){"", NULL} } },*/
+	/* { MODKEY|ShiftMask,		XK_semicolon,	spawn,		{.v = (const char*[]){"", NULL} } },*/
+       	/* { MODKEY,			XK_apostrophe,	togglescratch,	{.ui = 1} }, */
+	/* { MODKEY|ShiftMask,		XK_apostrophe,	spawn,		{.v = (const char*[]){"", NULL} } },*/
+	{ MODKEY,			XK_Return,	spawn,		{.v=termcmd}},
+	/* { MODKEY|ShiftMask,		XK_Return,	spawn,		{.v = (const char*[]){"", NULL} } },*/
+
+	/* { MODKEY,			XK_z,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	/* { MODKEY|ShiftMask,		XK_z,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	/* { MODKEY,			XK_x,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	/* { MODKEY|ShiftMask,		XK_x,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	/* { MODKEY,			XK_c,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	/* { MODKEY|ShiftMask,		XK_c,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	/* { MODKEY,			XK_v,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	/* { MODKEY|ShiftMask,		XK_v,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	{ MODKEY,			XK_b,		togglebar,	{0} },
+	/* { MODKEY|ShiftMask,		XK_b,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	{ MODKEY,			XK_n,		spawn,		{.v = (const char*[]){"bookmarks", NULL} } },
+	/* { MODKEY|ShiftMask,		XK_n,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	{ MODKEY,			XK_m,		setlayout,	{.v = &layouts[2]} },
+	/* { MODKEY|ShiftMask,		XK_m,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	{ MODKEY,			XK_comma,	focusmon,	{.i = -1 } },
+	{ MODKEY|ShiftMask,		XK_comma,	tagmon,		{.i = -1 } },
+	{ MODKEY,			XK_period,	focusmon,	{.i = +1 } },
+	{ MODKEY|ShiftMask,		XK_period,	tagmon,		{.i = +1 } },
+
+	{ MODKEY,			XK_space,	setlayout,	{0} },
+	{ MODKEY|ShiftMask,		XK_space,	togglefloating,	{0} },
+	/* { MODKEY,			XK_space,	zoom,		{0} },*/
+
+	{ 0,		XF86XK_AudioMute,		spawn,		SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && kill -36 $(pidof dsblocks)") },
+	{ 0,		XF86XK_AudioRaiseVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 4%+ && kill -36 $(pidof dsblocks)") },
+	{ 0,		XF86XK_AudioLowerVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 4%- && kill -36 $(pidof dsblocks)") },
+	{ 0,		XF86XK_AudioMicMute,		spawn,		{.v = (const char*[]){"wpctl", "set-mute", "@DEFAULT_AUDIO_SOURCE@", "toggle", NULL} } },
+	{ 0,		XF86XK_MonBrightnessUp,		spawn,		{.v = (const char*[]){"light", "-A", "5", NULL} } },
+	{ 0,		XF86XK_MonBrightnessDown,	spawn,		{.v = (const char*[]){"light", "-U", "5", NULL} } },
 };
 
 /* button definitions */
