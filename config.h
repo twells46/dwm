@@ -171,8 +171,8 @@ static const Key keys[] = {
 	{ MODKEY,			XK_Return,	spawn,		{.v=termcmd}},
 	/* { MODKEY|ShiftMask,		XK_Return,	spawn,		{.v = (const char*[]){"", NULL} } },*/
 
-	/* { MODKEY,			XK_z,		spawn,		{.v = (const char*[]){"", NULL} } },*/
-	/* { MODKEY|ShiftMask,		XK_z,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+        { MODKEY,			XK_z,		spawn,		{.v = (const char*[]){"mullvad-browser-launcher", NULL} } },
+	{ MODKEY|ShiftMask,		XK_z,		spawn,		{.v = (const char*[]){"tor-browser-launcher", NULL} } },
 	/* { MODKEY,			XK_x,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	/* { MODKEY|ShiftMask,		XK_x,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	/* { MODKEY,			XK_c,		spawn,		{.v = (const char*[]){"", NULL} } },*/
