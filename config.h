@@ -56,7 +56,7 @@ static const Rule rules[] = {
 	 */
 	/* class	instance	title	tags	mask	isfloating	monitor */
 	{ "Gimp",	NULL,		NULL,	0,	1,	-1 },
-	{ "Firefox",	NULL,		NULL,	1 << 8,	0,	-1 },
+	/* { "Firefox",	NULL,		NULL,	1 << 8,	0,	-1 }, */
 };
 
 /* layout(s) */
@@ -118,9 +118,9 @@ static const Key keys[] = {
 	TAGKEYS(			XK_9,		8)
 	{ MODKEY,			XK_0,		view,		{.ui = ~0 } },
 	{ MODKEY|ShiftMask,		XK_0,		tag,		{.ui = ~0 } },
-	/* { MODKEY,			XK_minus,	spawn,		SHCMD("") },*/
-	/* { MODKEY|ShiftMask,		XK_minus,	spawn,		SHCMD("") },*/
-	/* { MODKEY,			XK_equal,	spawn,		SHCMD("") },*/
+	{ MODKEY,			XK_minus,	scratchpad_show,    {0} },
+	{ MODKEY|ShiftMask,		XK_minus,	scratchpad_hide,    {0} },
+	{ MODKEY,			XK_equal,	scratchpad_remove,  {0} },
 	/* { MODKEY|ShiftMask,		XK_equal,	spawn,		SHCMD("") },*/
 	/* { MODKEY,			XK_BackSpace,	spawn,		{.v = (const char*[]){ "sysact", NULL } } },*/
 	/* { MODKEY|ShiftMask,		XK_BackSpace,	spawn,		{.v = (const char*[]){ "sysact", NULL } } },*/
@@ -128,7 +128,7 @@ static const Key keys[] = {
 	{ MODKEY,			XK_Tab,		view,		{0} },
 	/* { MODKEY|ShiftMask,		XK_Tab,		view,		{0} }, */
 	{ MODKEY,			XK_q,		killclient,	{0} },
-	{ MODKEY,			XK_w,		spawn,		{.v = (const char*[]){"mullvad", NULL} } },
+	/* { MODKEY,			XK_w,		spawn,		{.v = (const char*[]){"mullvad", NULL} } },*/
 	/* { MODKEY|ShiftMask,		XK_w,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	/* { MODKEY,			XK_e,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	{ MODKEY|ShiftMask,		XK_e,		quit,		{0} },
@@ -138,23 +138,24 @@ static const Key keys[] = {
 	/* { MODKEY|ShiftMask,		XK_t,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	/* { MODKEY,			XK_y,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	/* { MODKEY|ShiftMask,		XK_y,		spawn,		{.v = (const char*[]){"", NULL} } },*/
-	{ MODKEY,			XK_u,		spawn,		{.v = (const char*[]){"gousermenu", NULL} } },
+	/* { MODKEY,			XK_u,		spawn,		{.v = (const char*[]){"gousermenu", NULL} } }, */
 	/* { MODKEY|ShiftMask,		XK_u,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	{ MODKEY,			XK_o,		incnmaster,	{.i = +1 } },
 	{ MODKEY|ShiftMask,		XK_o,		incnmaster,	{.i = -1 } },
 	{ MODKEY,			XK_p,		spawn,		{.v = (const char*[]){"gopassmenu", NULL} } },
-	/* { MODKEY|ShiftMask,		XK_p,		spawn,		{.v = (const char*[]){"", NULL} } },*/
-	{ MODKEY,     		        XK_bracketleft,		spawn,		{.v = (const char*[]){ "mpc", "prev", NULL } } },
-	{ MODKEY|ShiftMask,		XK_bracketleft,        	spawn,		{.v = (const char*[]){ "mpc", "seek", "0%", NULL } } },
+	{ MODKEY|ShiftMask,		XK_p,		spawn,		{.v = (const char*[]){"gousermenu", NULL} } },
+	{ MODKEY,			XK_bracketleft,		spawn,		{.v = (const char*[]){ "mpc", "seek", "0%", NULL } } },
+	{ MODKEY|ShiftMask,		XK_bracketleft,		spawn,		{.v = (const char*[]){ "mpc", "prev", NULL } } },
 	{ MODKEY,			XK_bracketright,	spawn,		{.v = (const char*[]){ "mpc", "next", NULL } } },
 	{ MODKEY|ShiftMask,		XK_bracketright,	spawn,		{.v = (const char*[]){ "mpc", "repeat", NULL } } },
-	/* { MODKEY,			XK_backslash,		view,		{0} }, */
-	/* { MODKEY|ShiftMask,		XK_backslash,		spawn,		SHCMD("") }, */
+	{ MODKEY,			XK_backslash,		spawn,		{.v = (const char*[]){ "mpc", "toggle", NULL } } },
+	{ MODKEY|ShiftMask,		XK_backslash,		spawn,		{.v = (const char*[]){ "st", "-e", "ncmpcpp", NULL } } },
 
 	/* { MODKEY,			XK_a,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	/* { MODKEY|ShiftMask,		XK_a,		spawn,		{.v = (const char*[]){"", NULL} } },*/
-	/* { MODKEY,			XK_s,		spawn,		{.v = (const char*[]){"", NULL} } },*/
-	/* { MODKEY|ShiftMask,		XK_s,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	{ MODKEY,			XK_s,		togglebar,	{0} },
+	{ MODKEY|ShiftMask,		XK_s,		spawn,		SHCMD("pkill -HUP dwmblocks && dwmblocks") },
+	{ MODKEY,			XK_d,		spawn,		{.v=dmenucmd}},
 	/* { MODKEY,			XK_d,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	/* { MODKEY|ShiftMask,		XK_d,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	{ MODKEY,			XK_f,		setlayout,	{.v = &layouts[1]} },
@@ -173,15 +174,15 @@ static const Key keys[] = {
 
         { MODKEY,			XK_z,		spawn,		{.v = (const char*[]){"mullvad-browser-launcher", NULL} } },
 	{ MODKEY|ShiftMask,		XK_z,		spawn,		{.v = (const char*[]){"tor-browser-launcher", NULL} } },
-	/* { MODKEY,			XK_x,		spawn,		{.v = (const char*[]){"", NULL} } },*/
-	/* { MODKEY|ShiftMask,		XK_x,		spawn,		{.v = (const char*[]){"", NULL} } },*/
-	/* { MODKEY,			XK_c,		spawn,		{.v = (const char*[]){"", NULL} } },*/
-	/* { MODKEY|ShiftMask,		XK_c,		spawn,		{.v = (const char*[]){"", NULL} } },*/
-	/* { MODKEY,			XK_v,		spawn,		{.v = (const char*[]){"", NULL} } },*/
-	/* { MODKEY|ShiftMask,		XK_v,		spawn,		{.v = (const char*[]){"", NULL} } },*/
-	{ MODKEY,			XK_b,		togglebar,	{0} },
-	/* { MODKEY|ShiftMask,		XK_b,		spawn,		{.v = (const char*[]){"", NULL} } },*/
-	{ MODKEY,			XK_n,		spawn,		{.v = (const char*[]){"bookmarks", NULL} } },
+	{ MODKEY,			XK_x,		spawn,		SHCMD("get-bookmark | xargs -r firefox") },
+	{ MODKEY|ShiftMask,		XK_x,		spawn,		SHCMD("get-bookmark | xargs -r firefox --private-window") },
+	{ MODKEY,			XK_c,		spawn,		SHCMD("get-bookmark | xargs -r surf") },
+	{ MODKEY|ShiftMask,		XK_c,		spawn,		SHCMD("get-bookmark | xargs -r surf-incognito") },
+	{ MODKEY,			XK_v,		spawn,		SHCMD("xsel -bo | linkmenu") },
+	{ MODKEY|ShiftMask,		XK_v,		spawn,		SHCMD("xsel -po | linkmenu") },
+	{ MODKEY,			XK_b,		spawn,		SHCMD("get-bookmark | xargs -r xdotool type --delay 5") },
+	{ MODKEY|ShiftMask,		XK_b,		spawn,		SHCMD("xclip -o | save-bookmark") },
+	/* { MODKEY,			XK_n,		spawn,		{.v = (const char*[]){"", NULL} } }, */
 	/* { MODKEY|ShiftMask,		XK_n,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	{ MODKEY,			XK_m,		setlayout,	{.v = &layouts[2]} },
 	/* { MODKEY|ShiftMask,		XK_m,		spawn,		{.v = (const char*[]){"", NULL} } },*/
@@ -198,8 +199,8 @@ static const Key keys[] = {
 	{ 0,		XF86XK_AudioRaiseVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 4%+ && kill -36 $(pidof dsblocks)") },
 	{ 0,		XF86XK_AudioLowerVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 4%- && kill -36 $(pidof dsblocks)") },
 	{ 0,		XF86XK_AudioMicMute,		spawn,		{.v = (const char*[]){"wpctl", "set-mute", "@DEFAULT_AUDIO_SOURCE@", "toggle", NULL} } },
-	{ 0,		XF86XK_MonBrightnessUp,		spawn,		{.v = (const char*[]){"light", "-A", "5", NULL} } },
-	{ 0,		XF86XK_MonBrightnessDown,	spawn,		{.v = (const char*[]){"light", "-U", "5", NULL} } },
+	{ 0,		XF86XK_MonBrightnessUp,		spawn,		{.v = (const char*[]){"brightnessctl", "set", "+5%", NULL} } },
+	{ 0,		XF86XK_MonBrightnessDown,	spawn,		{.v = (const char*[]){"brightnessctl", "set", "5%-", NULL} } },
 };
 
 /* button definitions */
