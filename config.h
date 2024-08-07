@@ -195,9 +195,9 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_space,	togglefloating,	{0} },
 	/* { MODKEY,			XK_space,	zoom,		{0} },*/
 
-	{ 0,		XF86XK_AudioMute,		spawn,		SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && kill -36 $(pidof dsblocks)") },
-	{ 0,		XF86XK_AudioRaiseVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 4%+ && kill -36 $(pidof dsblocks)") },
-	{ 0,		XF86XK_AudioLowerVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 4%- && kill -36 $(pidof dsblocks)") },
+	{ 0,		XF86XK_AudioMute,		spawn,		SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && kill -36 $(pidof dwmblocks)") },
+	{ 0,		XF86XK_AudioRaiseVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 4%+ && kill -36 $(pidof dwmblocks)") },
+	{ 0,		XF86XK_AudioLowerVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 4%- && kill -36 $(pidof dwmblocks)") },
 	{ 0,		XF86XK_AudioMicMute,		spawn,		{.v = (const char*[]){"wpctl", "set-mute", "@DEFAULT_AUDIO_SOURCE@", "toggle", NULL} } },
 	{ 0,		XF86XK_MonBrightnessUp,		spawn,		{.v = (const char*[]){"brightnessctl", "set", "+5%", NULL} } },
 	{ 0,		XF86XK_MonBrightnessDown,	spawn,		{.v = (const char*[]){"brightnessctl", "set", "5%-", NULL} } },
