@@ -82,7 +82,7 @@ static const Layout layouts[] = {
 #define STACKKEYS(MOD,ACTION) \
 	{ MOD, XK_j,     ACTION##stack, {.i = INC(+1) } }, \
 	{ MOD, XK_k,     ACTION##stack, {.i = INC(-1) } }, \
-	{ MOD, XK_x,     ACTION##stack, {.i = -1 } },
+	/* { MOD, XK_x,     ACTION##stack, {.i = -1 } }, */
 	/* { MOD, XK_a,     ACTION##stack, {.i = 0 } }, \ */
 	/* { MOD, XK_z,     ACTION##stack, {.i = 1 } }, \ */
 	/* { MOD, XK_grave, ACTION##stack, {.i = PREVSEL } }, \ */
@@ -135,6 +135,7 @@ static const Key keys[] = {
 	/* { MODKEY,			XK_r,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	/* { MODKEY|ShiftMask,		XK_r,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	{ MODKEY,			XK_t,		setlayout,	{.v = &layouts[0]} },
+	{ MODKEY|ShiftMask,		XK_t,		setlayout,	{0} },
 	/* { MODKEY|ShiftMask,		XK_t,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	/* { MODKEY,			XK_y,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	/* { MODKEY|ShiftMask,		XK_y,		spawn,		{.v = (const char*[]){"", NULL} } },*/
@@ -180,7 +181,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_c,		spawn,		SHCMD("get-bookmark | xargs -r surf-incognito") },
 	{ MODKEY,			XK_v,		spawn,		SHCMD("xsel -bo | linkmenu") },
 	{ MODKEY|ShiftMask,		XK_v,		spawn,		SHCMD("xsel -po | linkmenu") },
-	{ MODKEY,			XK_b,		spawn,		SHCMD("get-bookmark | xargs -r xdotool type --delay 5") },
+	{ MODKEY,			XK_b,		spawn,		SHCMD("get-bookmark | xargs -r xdotool type") },
 	{ MODKEY|ShiftMask,		XK_b,		spawn,		SHCMD("xclip -o | save-bookmark") },
 	/* { MODKEY,			XK_n,		spawn,		{.v = (const char*[]){"", NULL} } }, */
 	/* { MODKEY|ShiftMask,		XK_n,		spawn,		{.v = (const char*[]){"", NULL} } },*/
@@ -191,9 +192,8 @@ static const Key keys[] = {
 	{ MODKEY,			XK_period,	focusmon,	{.i = +1 } },
 	{ MODKEY|ShiftMask,		XK_period,	tagmon,		{.i = +1 } },
 
-	{ MODKEY,			XK_space,	setlayout,	{0} },
+	{ MODKEY,			XK_space,	zoom,		{0} },
 	{ MODKEY|ShiftMask,		XK_space,	togglefloating,	{0} },
-	/* { MODKEY,			XK_space,	zoom,		{0} },*/
 
 	{ 0,		XF86XK_AudioMute,		spawn,		SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && kill -36 $(pidof dwmblocks)") },
 	{ 0,		XF86XK_AudioRaiseVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 4%+ && kill -36 $(pidof dwmblocks)") },
