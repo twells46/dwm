@@ -104,7 +104,7 @@ static const Key keys[] = {
 	/* modifier			key		function	argument */
     	STACKKEYS(MODKEY,                          	focus)
 	STACKKEYS(MODKEY|ShiftMask,                	push)
-	/* { MODKEY|ShiftMask,		XK_Escape,	spawn,		SHCMD("") }, */
+	{ MODKEY|ShiftMask,		XK_Escape,	spawn,		{.v = (const char*[]){"slock", NULL} } },
 	/* { MODKEY,			XK_grave,	spawn,		{.v = (const char*[]){ "dmenuunicode", NULL } } }, */
 	/* { MODKEY|ShiftMask,		XK_grave,	togglescratch,	SHCMD("") }, */
 	TAGKEYS(			XK_1,		0)
@@ -155,7 +155,7 @@ static const Key keys[] = {
 	/* { MODKEY,			XK_a,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	/* { MODKEY|ShiftMask,		XK_a,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	{ MODKEY,			XK_s,		togglebar,	{0} },
-	{ MODKEY|ShiftMask,		XK_s,		spawn,		SHCMD("pkill -HUP dwmblocks && dwmblocks") },
+	{ MODKEY|ShiftMask,		XK_s,		spawn,		SHCMD("pkill -HUP gostatus && gostatus") },
 	{ MODKEY,			XK_d,		spawn,		{.v=dmenucmd}},
 	/* { MODKEY,			XK_d,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	/* { MODKEY|ShiftMask,		XK_d,		spawn,		{.v = (const char*[]){"", NULL} } },*/
@@ -175,15 +175,15 @@ static const Key keys[] = {
 
         { MODKEY,			XK_z,		spawn,		{.v = (const char*[]){"mullvad-browser-launcher", NULL} } },
 	{ MODKEY|ShiftMask,		XK_z,		spawn,		{.v = (const char*[]){"tor-browser-launcher", NULL} } },
-	{ MODKEY,			XK_x,		spawn,		SHCMD("get-bookmark | xargs -r firefox") },
-	{ MODKEY|ShiftMask,		XK_x,		spawn,		SHCMD("get-bookmark | xargs -r firefox --private-window") },
+	{ MODKEY,			XK_x,		spawn,		SHCMD("get-bookmark | xargs firefox") },
+	{ MODKEY|ShiftMask,		XK_x,		spawn,		SHCMD("get-bookmark | xargs firefox --private-window") },
 	{ MODKEY,			XK_c,		spawn,		SHCMD("get-bookmark | xargs -r surf") },
 	{ MODKEY|ShiftMask,		XK_c,		spawn,		SHCMD("get-bookmark | xargs -r surf-incognito") },
 	{ MODKEY,			XK_v,		spawn,		SHCMD("xsel -bo | linkmenu") },
 	{ MODKEY|ShiftMask,		XK_v,		spawn,		SHCMD("xsel -po | linkmenu") },
 	{ MODKEY,			XK_b,		spawn,		SHCMD("get-bookmark | xargs -r xdotool type") },
 	{ MODKEY|ShiftMask,		XK_b,		spawn,		SHCMD("xclip -o | save-bookmark") },
-	/* { MODKEY,			XK_n,		spawn,		{.v = (const char*[]){"", NULL} } }, */
+	{ MODKEY,			XK_n,		spawn,		{.v = (const char*[]){"st", "-e", "newsraft", NULL} } },
 	/* { MODKEY|ShiftMask,		XK_n,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	{ MODKEY,			XK_m,		setlayout,	{.v = &layouts[2]} },
 	/* { MODKEY|ShiftMask,		XK_m,		spawn,		{.v = (const char*[]){"", NULL} } },*/
@@ -195,9 +195,9 @@ static const Key keys[] = {
 	{ MODKEY,			XK_space,	zoom,		{0} },
 	{ MODKEY|ShiftMask,		XK_space,	togglefloating,	{0} },
 
-	{ 0,		XF86XK_AudioMute,		spawn,		SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && kill -36 $(pidof dwmblocks)") },
-	{ 0,		XF86XK_AudioRaiseVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 4%+ && kill -36 $(pidof dwmblocks)") },
-	{ 0,		XF86XK_AudioLowerVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 4%- && kill -36 $(pidof dwmblocks)") },
+	{ 0,		XF86XK_AudioMute,		spawn,		{.v = (const char*[]){"wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle", NULL} } },
+	{ 0,		XF86XK_AudioRaiseVolume,	spawn,		{.v = (const char*[]){"wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", "4%+", NULL} } },
+	{ 0,		XF86XK_AudioLowerVolume,	spawn,		{.v = (const char*[]){"wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", "4%-", NULL} } },
 	{ 0,		XF86XK_AudioMicMute,		spawn,		{.v = (const char*[]){"wpctl", "set-mute", "@DEFAULT_AUDIO_SOURCE@", "toggle", NULL} } },
 	{ 0,		XF86XK_MonBrightnessUp,		spawn,		{.v = (const char*[]){"brightnessctl", "set", "+5%", NULL} } },
 	{ 0,		XF86XK_MonBrightnessDown,	spawn,		{.v = (const char*[]){"brightnessctl", "set", "5%-", NULL} } },
