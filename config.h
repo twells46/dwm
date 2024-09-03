@@ -152,7 +152,7 @@ static const Key keys[] = {
 	{ MODKEY,			XK_backslash,		spawn,		{.v = (const char*[]){ "mpc", "toggle", NULL } } },
 	{ MODKEY|ShiftMask,		XK_backslash,		spawn,		{.v = (const char*[]){ "st", "-e", "ncmpcpp", NULL } } },
 
-	/* { MODKEY,			XK_a,		spawn,		{.v = (const char*[]){"", NULL} } },*/
+	{ MODKEY,			XK_a,		spawn,		SHCMD("get-bookmark | xargs chromium") },
 	/* { MODKEY|ShiftMask,		XK_a,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	{ MODKEY,			XK_s,		togglebar,	{0} },
 	{ MODKEY|ShiftMask,		XK_s,		spawn,		SHCMD("pkill -HUP gostatus && gostatus") },
