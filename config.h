@@ -155,7 +155,7 @@ static const Key keys[] = {
 	{ MODKEY,			XK_a,		spawn,		SHCMD("get-bookmark | xargs chromium") },
 	/* { MODKEY|ShiftMask,		XK_a,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	{ MODKEY,			XK_s,		togglebar,	{0} },
-	{ MODKEY|ShiftMask,		XK_s,		spawn,		SHCMD("pkill -HUP gostatus && gostatus") },
+	/* { MODKEYShiftMask,		XK_s,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	{ MODKEY,			XK_d,		spawn,		{.v=dmenucmd}},
 	/* { MODKEY,			XK_d,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	/* { MODKEY|ShiftMask,		XK_d,		spawn,		{.v = (const char*[]){"", NULL} } },*/
@@ -175,12 +175,13 @@ static const Key keys[] = {
 
         { MODKEY,			XK_z,		spawn,		{.v = (const char*[]){"mullvad-browser-launcher", NULL} } },
 	{ MODKEY|ShiftMask,		XK_z,		spawn,		{.v = (const char*[]){"tor-browser-launcher", NULL} } },
-	{ MODKEY,			XK_x,		spawn,		SHCMD("get-bookmark | xargs firefox") },
+	/* { MODKEY,			XK_x,		spawn,		SHCMD("get-bookmark | xargs firefox") }, */
+	{ MODKEY,			XK_x,		spawn,		SHCMD("firefox $(get-bookmark)") },
 	{ MODKEY|ShiftMask,		XK_x,		spawn,		SHCMD("get-bookmark | xargs firefox --private-window") },
 	{ MODKEY,			XK_c,		spawn,		SHCMD("get-bookmark | xargs -r surf") },
 	{ MODKEY|ShiftMask,		XK_c,		spawn,		SHCMD("get-bookmark | xargs -r surf-incognito") },
 	{ MODKEY,			XK_v,		spawn,		SHCMD("xsel -bo | linkmenu") },
-	{ MODKEY|ShiftMask,		XK_v,		spawn,		SHCMD("xsel -po | linkmenu") },
+	/* { MODKEY|ShiftMask,		XK_v,		spawn,		{.v = (const char*[]){"", NULL} } },*/
 	{ MODKEY,			XK_b,		spawn,		SHCMD("get-bookmark | xargs -r xdotool type") },
 	{ MODKEY|ShiftMask,		XK_b,		spawn,		SHCMD("xclip -o | save-bookmark") },
 	{ MODKEY,			XK_n,		spawn,		{.v = (const char*[]){"st", "-e", "newsraft", NULL} } },
@@ -195,10 +196,15 @@ static const Key keys[] = {
 	{ MODKEY,			XK_space,	zoom,		{0} },
 	{ MODKEY|ShiftMask,		XK_space,	togglefloating,	{0} },
 
-	{ 0,		XF86XK_AudioMute,		spawn,		SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && pkill -SIGUSR1 gostatus") },
-	{ 0,		XF86XK_AudioRaiseVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 4%+ && pkill -SIGUSR1 gostatus") },
-	{ 0,		XF86XK_AudioLowerVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 4%- && pkill -SIGUSR1 gostatus") },
-	{ 0,		XF86XK_AudioMicMute,		spawn,		{.v = (const char*[]){"wpctl", "set-mute", "@DEFAULT_AUDIO_SOURCE@", "toggle", NULL} } },
+	{ 0,		XF86XK_AudioMute,		spawn,		{.v = (const char*[]){"wpctl", "set-mute", "@DEFAULT_SINK@", "toggle", NULL} } },
+	{ 0,		XF86XK_AudioRaiseVolume,	spawn,		{.v = (const char*[]){"wpctl", "set-volume", "@DEFAULT_SINK@", "4%+", NULL} } },
+	{ 0,		XF86XK_AudioLowerVolume,	spawn,		{.v = (const char*[]){"wpctl", "set-volume", "@DEFAULT_SINK@", "4%-", NULL} } },
+	/*
+	{ 0,		XF86XK_AudioMute,		spawn,		SHCMD("wpctl set-mute @DEFAULT_SINK@ toggle && pkill -SIGUSR1 gostatus") },
+	{ 0,		XF86XK_AudioRaiseVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_SINK@ 4%+ && pkill -SIGUSR1 gostatus") },
+	{ 0,		XF86XK_AudioLowerVolume,	spawn,		SHCMD("wpctl set-volume @DEFAULT_SINK@ 4%- && pkill -SIGUSR1 gostatus") },
+	*/
+	{ 0,		XF86XK_AudioMicMute,		spawn,		{.v = (const char*[]){"wpctl", "set-mute", "@DEFAULT_SOURCE@", "toggle", NULL} } },
 	{ 0,		XF86XK_MonBrightnessUp,		spawn,		{.v = (const char*[]){"brightnessctl", "set", "+5%", NULL} } },
 	{ 0,		XF86XK_MonBrightnessDown,	spawn,		{.v = (const char*[]){"brightnessctl", "set", "5%-", NULL} } },
 	/*{ 0,		XF86XK_Display,			spawn,		{.v = (const char*[]){"", NULL} } }, */
